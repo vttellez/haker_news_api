@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Proxy\HttpClientContext.cs" />
+    <Compile Remove="Proxy\HttpClientFactory.cs" />
+    <Compile Remove="Proxy\HttpClientFactoryOptions.cs" />
+    <Compile Remove="Proxy\IHttpClientFactory.cs" />
+    <Compile Remove="Proxy\IHttpClientFactoryOptions.cs" />
+    <Compile Remove="Proxy\IHttpRequestOptions.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
+  </ItemGroup>
+
+</Project>

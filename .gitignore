@@ -11,3 +11,6 @@
 /HackerNews.Api/HackerNews.Models/obj
 /HackerNews.Api/HackerNews.Services/obj
 /HackerNews.Api/HackerNews.Services/bin/Debug/netcoreapp3.1
+/HackerNews.Api/HackerNews.Tests/obj/Debug/netcoreapp3.1
+/HackerNews.Api/HackerNews.Tests/obj
+/HackerNews.Api/HackerNews.Tests/bin/Debug/netcoreapp3.1

@@ -24,7 +24,7 @@ namespace HackerNews.Api.Controllers
         {
             try
             {
-                return Ok(await _hackernewsService.GetHackerNews());
+                return Ok(await _hackernewsService.GetNewStories());
             }
             catch  //(Exception ex)
             {

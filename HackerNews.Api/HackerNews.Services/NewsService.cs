@@ -11,7 +11,7 @@ namespace HackerNews.Services
         {
             _hackerNewsProxy = hackerNewsProxy;
         }
-        public async Task<IEnumerable<GetNewStoriesResponse>> GetHackerNews()
+        public async Task<IEnumerable<GetNewStoriesResponse>> GetNewStories()
         {
             return await _hackerNewsProxy.GetNewStories();
         }

@@ -22,11 +22,12 @@ namespace HackerNews.Api.Controllers
         [Produces("application/json")]
         [ProducesResponseType(200)]
         [ProducesResponseType(500)]
-        public async Task<IActionResult> Get()
+        [Route("{page=1}/{count=10}")]
+        public async Task<IActionResult> Get(short page = 1, short count = 10)
         {
             try
             {
-                return Ok(await _hackernewsService.GetNewStories());
+                return Ok(await _hackernewsService.GetNewStories(page, count));
             }
             catch  //(Exception ex)
             {

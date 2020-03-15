@@ -27,8 +27,9 @@ namespace HackerNews.Services
             // For performance reasons I am just taking the first 20 stories
             // this is a candidate for pagination implementation
 
-            await AddNewsItem(respose, newStories.Take(20));
+            //await AddNewsItem(respose, newStories.Take(20));
 
+            await AddNewsItem(respose, newStories);
             return respose;
         }
 

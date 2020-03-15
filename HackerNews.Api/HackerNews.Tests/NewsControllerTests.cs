@@ -26,7 +26,7 @@ namespace HackerNews.Tests
             //Arrange
             int extectedResult = 200;
             //Act
-            var actualResult = (ObjectResult) _storiesController.Get().Result;
+            var actualResult = (ObjectResult)_storiesController.Get().Result;
             //Assert
             Assert.AreEqual(extectedResult, actualResult.StatusCode);
         }
@@ -35,10 +35,10 @@ namespace HackerNews.Tests
         public void StoriesController_Get_Should_Return_StatusCode_500_When_NewsServieFail()
         {
             //Arrange
-            _hackerNewsService.Setup(x => x.GetNewStories()).ReturnsAsync( () =>
-            {
-                throw new Exception("Unable to connect");
-            });
+            _hackerNewsService.Setup(x => x.GetNewStories(It.IsAny<short>(), It.IsAny<short>())).ReturnsAsync(() =>
+           {
+               throw new Exception("Unable to connect");
+           });
             int extectedResult = 500;
             //Act
             var actualResult = (ObjectResult)_storiesController.Get().Result;

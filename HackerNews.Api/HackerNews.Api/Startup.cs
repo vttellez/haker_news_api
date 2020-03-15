@@ -1,4 +1,5 @@
 using System;
+using HackerNews.Core.Caching;
 using HackerNews.Core.Proxy.Serialization;
 using HackerNews.Core.Proxy.Serialization.Json;
 using HackerNews.Services;
@@ -23,7 +24,7 @@ namespace HackerNews.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
             services.AddCors(options =>
             {
                 options.AddPolicy("MyAllowSpecificOrigins",
@@ -37,6 +38,12 @@ namespace HackerNews.Api
 
             });
             services.AddControllers();
+
+            services.AddEasyCaching(options =>
+                {
+                    options.UseInMemory("default");
+                }
+             );
 
             // For simplicity I will add services registration here. This can be extracted in a Middleware to handle common services registrationv
             RegisterServices(services);
@@ -52,6 +59,7 @@ namespace HackerNews.Api
             services.AddSingleton<IObjectSerializer>(new JsonObjectSerializer(new JsonSerializerSettings()));
             services.AddHttpProxy<IHackerNewsProxy, HackerNewsProxy>("HackerNewsApiBaseUrl");
             services.AddScoped<IHackerNewsService, HackerNewsService>();
+            services.AddSingleton<IStaticCacheManager, MemoryCacheManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

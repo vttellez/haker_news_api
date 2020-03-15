@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Threading.Tasks;
 using HackerNews.Api;
 using HackerNews.Services.NewsResponse;
 using Microsoft.AspNetCore.Mvc.Testing;
@@ -28,9 +29,10 @@ namespace HackerNews.Tests
 
 
         [TestMethod]
-        public async System.Threading.Tasks.Task MyMethodAsync()
+        public async Task Get()
         {
-            var responseJson = await _client.GetStringAsync("stories");
+            //For performance issues only return one story
+            var responseJson = await _client.GetStringAsync("stories/1/1");
 
             IEnumerable<GetNewStoriesResponse> actualResponse = JsonConvert.DeserializeObject<List<GetNewStoriesResponse>>(responseJson);
 

@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoFixture;
 using HackerNews.Api;
+using HackerNews.Core.Caching;
 using HackerNews.Services;
 using HackerNews.Services.NewsResponse;
 using Microsoft.AspNetCore.Hosting;
@@ -15,35 +16,34 @@ namespace HackerNews.Tests
     [TestClass]
     public class NewsServiceTests
     {
-
+        private Mock<HackerNewsService> _mockHackerNewsService;
         private HackerNewsService _hackerNewsService;
         private Mock<IHackerNewsProxy> _hackerNewsProxy;
+        private Mock<IStaticCacheManager> _staticCacheManager;
         private Fixture _fixture;
 
         [TestInitialize]
         public void Initialize()
         {
             _hackerNewsProxy = new Mock<IHackerNewsProxy>();
-            _hackerNewsService = new HackerNewsService(_hackerNewsProxy.Object);
+            _staticCacheManager = new Mock<IStaticCacheManager>();
+            _hackerNewsService = new HackerNewsService(_hackerNewsProxy.Object, _staticCacheManager.Object);
+            _mockHackerNewsService = new Mock<HackerNewsService>(_hackerNewsProxy.Object, _staticCacheManager.Object);
             _fixture = new Fixture();
-           // string[] args = new string[] { "% LAUNCHER_ARGS %" };
-           //var f=  CreateHostBuilder(args);
-           // f.Build().Services()
-           
         }
         [TestMethod]
-        public void HackerNewsService_GetNewStories_Sould_Return_ListOf_GetNewStoriesResponse()
+        public async Task HackerNewsService_GetNewStories_Sould_Return_ListOf_GetNewStoriesResponseAsync()
         {
             //Arrange
             int expectedNumberOfItems = 10;
-
-            _hackerNewsProxy.Setup(x => x.GetNewStories()).Returns(async () =>
+            _mockHackerNewsService.Setup(x => x.GetStoriesAsync(It.IsAny<string>())).Returns(async () =>
             {
                 IEnumerable<GetNewStoriesResponse> t = _fixture.CreateMany<GetNewStoriesResponse>(10);
-                return await Task.FromResult(t);
+                return await Task.FromResult(t.ToList());
             });
+
             //Act
-            IEnumerable<GetNewStoriesResponse> actualResult = _hackerNewsService.GetNewStories().Result;
+            IEnumerable<GetNewStoriesResponse> actualResult = await _mockHackerNewsService.Object.GetNewStories(1, 10);
             //Assert
             Assert.AreEqual(expectedNumberOfItems, actualResult.Count());
         }
@@ -54,22 +54,21 @@ namespace HackerNews.Tests
                .ConfigureWebHostDefaults(webBuilder =>
                {
                    webBuilder.UseStartup<Startup>();
-               });
-        // private void Methodd()
-        // {
-        //     var hostBuilder = new HostBuilder()
-        //.ConfigureWebHost(webHost =>
-        //{
-        //// Add TestServer
-        //webHost.Build();
+               }
+       );
 
-        //// Specify the environment
-        //webHost.UseEnvironment("Test");
-
-        //    webHost.Configure(app => app.Run();
-        //});
-        // }
-
+        [TestMethod]
+        public void HackerNewsService_Skip_Should_Skip_10_When_Page_Is_1()
+        {
+            //Arrange
+            int expectedSkipCount = 0;
+            short page = 1;
+            short count = 10;
+            //Act
+            var actualResult = _hackerNewsService.Skip(page, count);
+            //Assert
+            Assert.AreEqual(expectedSkipCount, actualResult);
+        }
     }
 
 

@@ -6,6 +6,6 @@ namespace HackerNews.Services
 {
     public interface IHackerNewsService
     {
-        Task<IEnumerable<GetNewStoriesResponse>> GetNewStories();
+        Task<IEnumerable<GetNewStoriesResponse>> GetNewStories(short page, short count = 10);
     }
 }

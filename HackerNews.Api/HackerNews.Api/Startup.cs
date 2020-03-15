@@ -23,6 +23,19 @@ namespace HackerNews.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
+            services.AddCors(options =>
+            {
+                options.AddPolicy("MyAllowSpecificOrigins",
+                       builder =>
+                       {
+                           // prod application must restrict the origins ex builder.WithOrigins("http://domain.com")
+                           builder.WithOrigins("*")
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                       });
+
+            });
             services.AddControllers();
 
             // For simplicity I will add services registration here. This can be extracted in a Middleware to handle common services registrationv
@@ -54,7 +67,7 @@ namespace HackerNews.Api
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseCors("MyAllowSpecificOrigins");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

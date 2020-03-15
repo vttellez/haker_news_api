@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using HackerNews.Services;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace HackerNews.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [EnableCors("MyAllowSpecificOrigins")]
     public class StoriesController : ControllerBase
     {
 
